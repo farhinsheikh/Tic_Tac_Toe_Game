@@ -4,6 +4,8 @@ echo " Welcome to the Tic Tac Toe Game"
 NUM_OF_ROWS=3
 NO_OF_COLUMNS=3
 EMPTY=-1
+SYMBOL1=X
+SYMBOL2=0
 
 declare -a dictBoard
 
@@ -17,3 +19,15 @@ for ((i=0; i<NUM_OF_ROWS; i++))
 	done
 }
 resetBoard
+
+function getSymbol(){
+   if [ $(( RANDOM%2 )) -eq 1 ]
+   then
+   echo "playerSymbol=$SYMBOL1"
+   echo "computerSymbol=$SYMBOL2"
+   else
+   echo "playerSymbol=$SYMBOL2"
+   echo "computerSymbol=$SYMBOL1"
+   fi
+}
+getSymbol
