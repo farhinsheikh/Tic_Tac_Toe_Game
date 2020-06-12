@@ -13,9 +13,9 @@ function resetBoard(){
 for ((i=0; i<NUM_OF_ROWS; i++))
 	do
 		for ((j=0; j<NUM_OF_COLUMNS; J++))
-			do
-				echo "dictBoard[$i,$j]=EMPTY"
-			done
+		do
+			echo "dictBoard[$i,$j]=EMPTY"
+		done
 	done
 }
 resetBoard
@@ -31,3 +31,13 @@ function getSymbol(){
    fi
 }
 getSymbol
+
+function getToss(){
+   if [ $(( RANDOM%2 )) -eq 1 ]
+   then
+      echo "Player should play 1st"
+   else
+      echo "Computer should play 1st"
+   fi
+}
+getToss
