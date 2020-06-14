@@ -4,7 +4,7 @@ echo " Welcome to the Tic Tac Toe Game"
 NUM_OF_ROWS=3
 NUM_OF_COLUMNS=3
 EMPTY=0
-PLAYER_SYMBOL=''
+PLAYER_SYMBOLBOL=''
 COMPUTER_SYMBOL=''
 LENGTH=$(( $NUM_OF_ROWS * $NUM_OF_COLUMNS ))
 
@@ -85,7 +85,6 @@ function displayBoard()
 	 printf "\n"
    done
 }
-displayBoard
 
 function inputToBoard()
 {
@@ -138,6 +137,7 @@ function inputToBoard()
             fi
       else
          echo "---- Computer's Turn ----"
+			checkForComputerWin
          computerTurn
          playerTurn=1
          if [ $(checkWinner $COMPUTER_SYMBOL) -eq 1  ]
@@ -307,4 +307,118 @@ function  computerTurn(){
          done
       fi
 }
+
+function checkForComputerWin()
+{
+
+   local row=0
+   local column=0
+   for ((row=0; row<NUM_OF_ROWS; row++))
+   do
+      if [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] && [ ${board[$(($row)),$(($column+1))]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$row,$(($column+2))]} != $PLAYER_SYMBOL ]
+          then
+             board[$row,$(($column+2))]=$COMPUTER_SYMBOL
+             break
+          fi
+      elif [ ${board[$row,$(($column+1))]} == $COMPUTER_SYMBOL ] && [ ${board[$row,$(($column+2))]} == $COMPUTER_SYMBOL ]
+      then
+          if [ ${board[$row,$column]} != $PLAYER_SYMBOL ]
+          then
+             board[$row,$column]=$COMPUTER_SYMBOL
+             break
+          fi
+      elif [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] && [ ${board[$row,$(($column+2))]} == $COMPUTER_SYMBOL ]
+      then
+          if [ ${board[$row,$(($column+1))]} != $PLAYER_SYMBOL ]
+          then
+             board[$row,$(($column+1))]=$COMPUTER_SYMBOL
+             break
+          fi
+      fi
+   done
+
+
+   local row=0
+   local column=0
+   for ((column=0; column<NUM_OFCOLUMNS; column++))
+   do
+      if [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] &&  [ ${board[$(($row+1)),$column]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$(($row+2)),$column]} != $PLAYER_SYMBOL ]
+         then
+            board[$(($row+2)),$column]=$COMPUTER_SYMBOL
+            break
+         fi
+      elif [ ${board[$(($row+1)),$column]} == $COMPUTER_SYMBOL ] && [ ${board[$(($row+2)),$column]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$row,$column]} != $PLAYER_SYMBOL ]
+         then
+            board[$row,$column]=$COMPUTER_SYMBOL
+            break
+          fi
+      elif [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] && [ ${board[$(($row+2)),$column]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$(($row+1)),$column]} != $PLAYER_SYMBOL ]
+         then
+            board[$(($row+1)),$column]=$COMPUTER_SYMBOL
+            break
+         fi
+      fi
+   done
+
+
+      local row=0
+      local column=0
+      local valid=''
+
+      if [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] &&  [ ${board[$(($row+1)),$(($column+1))]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$(($row+2)),$(($column+2))]} != $PLAYER_SYMBOL ]
+         then
+            board[$(($row+2)),$(($column+2))]=$COMPUTER_SYMBOL
+            return
+         fi
+      elif [ ${board[$(($row+1)),$(($column+1))]} == $COMPUTER_SYMBOL ] && [ ${board[$(($row+2)),$(($column+2))]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$row,$column]} != $PLAYER_SYMBOL ]
+         then
+            board[$row,$column]=$COMPUTER_SYMBOL
+            return
+          fi
+      elif [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] && [ ${board[$(($row+2)),$(($column+2))]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$(($row+1)),$(($column+1))]} != $PLAYER_SYMBOL ]
+         then
+            board[$(($row+1)),$(($column+1))]=$COMPUTER_SYMBOL
+            return
+          fi
+      elif [ ${board[$(($row+2)),$column]} == $COMPUTER_SYMBOL ] &&  [ ${board[$(($row+1)),$(($column+1))]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$row,$(($column+2))]} != $PLAYER_SYMBOL ]
+         then
+            board[$row,$(($column+2))]=$COMPUTER_SYMBOL
+            return
+          fi
+      elif [ ${board[$(($row+1)),$(($column+1))]} == $COMPUTER_SYMBOL ] && [ ${board[$row,$(($column+2))]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$(($row+2)),$column]} != $PLAYER_SYMBOL ]
+         then
+            board[$(($row+2)),$column]=$COMPUTER_SYMBOL
+            return
+          fi
+      elif [ ${board[$(($row+2)),$column]} == $COMPUTER_SYMBOL ] && [ ${board[$row,$(($column+2))]} == $COMPUTER_SYMBOL ]
+      then
+         if [ ${board[$(($row+1)),$(($column+1))]} != $PLAYER_SYMBOL ]
+         then
+            board[$(($row+1)),$(($column+1))]=$COMPUTER_SYMBOL
+            return
+          fi
+      else
+         return
+      fi
+}
+
 inputToBoard
+displayBoard
