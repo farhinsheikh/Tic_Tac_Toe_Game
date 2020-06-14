@@ -1,12 +1,12 @@
 #!/bin/bash -x
 echo "Welcome to the Tic Tac Toe Game"
 
-NUM_OF_ROWS=3
-NUM_OF_COLUMNS=3
+NUMBER_OF_ROWS=3
+NUMBER_OF_COLUMNS=3
 EMPTY=0
 PLAYER_SYMBOL=''
 COMPUTER_SYMBOL=''
-LENGTH=$(( $NUM_OF_ROWS * $NUM_OF_COLUMNS ))
+LENGTH=$(( $NUMBER_OF_ROWS * $NUMBER_OF_COLUMNS ))
 
 cell=1
 playerCell=''
@@ -23,28 +23,30 @@ function resetBoard()
    local i=0
    local j=0
 
-   for ((i=0; i<NUM_OF_ROWS; i++))
+   for ((i=0; i<NUMBER_OF_ROWS; i++))
    do
-      for ((j=0; j<NUM_OF_COLUMNS; j++))
+      for ((j=0; j<NUMBER_OF_COLUMNS; j++))
       do
          board[$i,$j]=$EMPTY
       done
    done
 }
+resetBoard
 
 function initializeBoard()
 {
    local x=0
    local y=0
-   for (( x=0; x<NUM_OF_ROWS; x++ ))
+   for (( x=0; x<NUMBER_OF_ROWS; x++ ))
    do
-      for (( y=0; y<NUM_OF_COLUMNS; y++ ))
+      for (( y=0; y<NUMBER_OF_COLUMNS; y++ ))
       do
          board[$x,$y]=$cell
          ((cell++))
       done
    done
 }
+initializeBoard
 
 function assigningSymbol()
 {
@@ -58,27 +60,29 @@ function assigningSymbol()
    fi
    echo "Player's Symbol - $PLAYER_SYMBOL"
 }
+assigningSymbol
 
 function toss()
 {
    if [ $(( RANDOM%2 )) -eq 1 ]
    then
       playerTurn=1
-      echo "Player shouls play first" 
+      echo "Player should play first" 
    else
       playerTurn=0
       echo "Computer should play first"
    fi
 }
+toss
 
 function displayBoard()
 {
    echo "--TicTacToe Board--"
    local i=0
    local j=0
-   for (( i=0; i<NUM_OF_ROWS; i++ ))
+   for (( i=0; i<NUMBER_OF_ROWS; i++ ))
    do
-      for (( j=0; j<NUM_OF_COLUMNS; j++ ))
+      for (( j=0; j<NUMBER_OF_COLUMNS; j++ ))
       do
          echo -n "  ${board[$i,$j]}  "
       done
@@ -105,13 +109,13 @@ function inputToBoard()
             printf "\n"
             ((i--))
          else
-            rowIndex=$(( $playerCell / $NUM_OF_ROWS ))
-               if [ $(( $playerCell % $NUM_OF_ROWS )) -eq 0 ]
+            rowIndex=$(( $playerCell / $NUMBER_OF_ROWS ))
+               if [ $(( $playerCell % $NUMBER_OF_ROWS )) -eq 0 ]
                then
                   rowIndex=$(( $rowIndex - 1 ))
                fi
 
-            columnIndex=$(( $playerCell %  $NUM_OF_COLUMNS ))
+            columnIndex=$(( $playerCell %  $NUMBER_OF_COLUMNS ))
                if [ $columnIndex -eq 0 ]
                then
                   columnIndex=$(( $columnIndex + 2 ))
@@ -202,7 +206,7 @@ function  computerTurn()
    then
       local row=0
       local column=0
-      for ((row=0; row<NUM_OF_ROWS; row++))
+      for ((row=0; row<NUMBER_OF_ROWS; row++))
       do
          if [ ${board[$row,$column]} == $PLAYER_SYMBOL ] && [ ${board[$(($row)),$(($column+1))]} == $PLAYER_SYMBOL ]
          then
@@ -236,7 +240,7 @@ function  computerTurn()
    then
       local row=0
       local column=0
-      for ((column=0; column<NUM_OF_COLUMNS; column++))
+      for ((column=0; column<NUMBER_OF_COLUMNS; column++))
       do
          if [ ${board[$row,$column]} == $PLAYER_SYMBOL ] &&  [ ${board[$(($row+1)),$column]} == $PLAYER_SYMBOL ]
          then
@@ -331,7 +335,7 @@ function checkForComputerWin()
 
    local row=0
    local column=0
-   for ((row=0; row<NUM_OF_ROWS; row++))
+   for ((row=0; row<NUMBER_OF_ROWS; row++))
    do
       if [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] && [ ${board[$(($row)),$(($column+1))]} == $COMPUTER_SYMBOL ]
       then
@@ -361,7 +365,7 @@ function checkForComputerWin()
 
    local row=0
    local column=0
-   for ((column=0; column<NUM_OF_COLUMNS; column++))
+   for ((column=0; column<NUMBER_OF_COLUMNS; column++))
    do
       if [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] &&  [ ${board[$(($row+1)),$column]} == $COMPUTER_SYMBOL ]
       then
@@ -479,11 +483,5 @@ function checkCornersCenterSides()
          isSideAvailable=true
       fi
 }
-
-
-resetBoard
-assigningSymbol
-toss
-initializeBoard
 inputToBoard
 displayBoard
