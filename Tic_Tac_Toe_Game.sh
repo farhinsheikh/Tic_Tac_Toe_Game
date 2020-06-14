@@ -13,6 +13,7 @@ playerCell=''
 playerTurn=''
 isCenterAvailable=''
 isCornerAvailable=''
+isSideAvailable=''
 cellBlocked=''
 
 declare -A board
@@ -134,26 +135,31 @@ function inputToBoard()
                   if [ $(checkWinner $PLAYER_SYMBOL) -eq 1  ]
                   then
                      echo "You Won"
-                     return 0
+                     exit
                   fi
-                  fi
-             	   fi
+                 fi
+             	 fi
       	else
          	echo "---- Computer's Turn ----"
 				checkForComputerWin
-         	computerTurn
-         	playerTurn=1
-				checkCornersAndCenter
          	if [ $(checkWinner $COMPUTER_SYMBOL) -eq 1  ]
          	then
             	echo "Computer Won"
             	exit
          	fi
-				if [ $isCornerAvailable == true ] || [ $isCenterAvailable == true ]
+				computerTurn
+				if [[ $cellBlocked == true ]]
+         then
+            cellBlocked=false
+         else
+			checkCornersAndCenter
+				if [ $isCornerAvailable == true ] || [ $isCenterAvailable == true ] || [ $isSideAvailable == true ]
          	then
-            	$isCornerAvailable=false
-            	$isCenterAvailable=false
+            	isCornerAvailable=false
+            	isCenterAvailable=false
+					isSideAvailable=false
          	fi
+				fi
          	playerTurn=1
       		fi
    		done
@@ -318,7 +324,7 @@ function  computerTurn(){
 
 function checkForComputerWin()
 {
-
+#Rows
    local row=0
    local column=0
    for ((row=0; row<NUM_OF_ROWS; row++))
@@ -347,7 +353,7 @@ function checkForComputerWin()
       fi
    done
 
-
+#Columns
    local row=0
    local column=0
    for ((column=0; column<NUM_OFCOLUMNS; column++))
@@ -376,10 +382,9 @@ function checkForComputerWin()
       fi
    done
 
-
+#Diagonal
       local row=0
       local column=0
-      local valid=''
 
       if [ ${board[$row,$column]} == $COMPUTER_SYMBOL ] &&  [ ${board[$(($row+1)),$(($column+1))]} == $COMPUTER_SYMBOL ]
       then
@@ -450,6 +455,22 @@ function checkCornersAndCenter()
       then
          board[1,1]=$COMPUTER_SYMBOL
          isCenterAvailable=true
+		 elif [ ${board[0,1]} != $PLAYER_SYMBOL ] && [ ${board[0,1]} != $COMPUTER_SYMBOL ]
+      then
+         board[0,1]=$COMPUTER_SYMBOL
+         isSideAvailable=true
+      elif [ ${board[1,2]} != $PLAYER_SYMBOL ] && [ ${board[1,2]} != $COMPUTER_SYMBOL ]
+      then
+         board[1,2]=$COMPUTER_SYMBOL
+         isSideAvailable=true
+      elif [ ${board[2,1]} != $PLAYER_SYMBOL ] && [ ${board[2,1]} != $COMPUTER_SYMBOL ]
+      then
+         board[2,1]=$COMPUTER_SYMBOL
+         isSideAvailable=true
+      elif [ ${board[1,0]} != $PLAYER_SYMBOL ] && [ ${board[1,0]} != $COMPUTER_SYMBOL ]
+      then
+         board[1,0]=$COMPUTER_SYMBOL
+         isSideAvailable=true
       fi
 }
 inputToBoard
