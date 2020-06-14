@@ -64,7 +64,7 @@ function toss()
    if [ $(( RANDOM%2 )) -eq 1 ]
    then
       playerTurn=1
-      echo "Player shouls play first" 
+      echo "Player should play first" 
    else
       playerTurn=0
       echo "Computer should play first"
