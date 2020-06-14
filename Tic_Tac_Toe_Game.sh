@@ -10,6 +10,8 @@ playerSymbol=''
 computerSymbol=''
 cell=1
 playerCell=''
+won=''
+flag=''
 
 declare -A dictBoard
 declare -A dictExit
@@ -38,7 +40,6 @@ function initializeBoard()
       done
    done
 }
-#initializeBoard
 
 function assignSymbol(){
    if [ $(( RANDOM%2 )) -eq 1 ]
@@ -49,8 +50,8 @@ function assignSymbol(){
    playerSymbol=0
    computerSymbol=X
    fi
+	echo "Player's symbol - $playerSymbol"
 }
-#assignSymbol
 
 function getToss(){
    if [ $(( RANDOM%2 )) -eq 1 ]
@@ -60,7 +61,6 @@ function getToss(){
       echo "Computer should play 1st"
    fi
 }
-#getToss
 
 function displayBoard()
 {
@@ -75,7 +75,6 @@ function displayBoard()
 	 printf "\n\n"
    done
 }
-#displayBoard
 
 function inputToBoard()
 {
@@ -114,14 +113,50 @@ function inputToBoard()
         ((i--))
      fi
 
-     dictBoard[$rowIndex,$columnIndex]=$playerSymbol
+		dictBoard[$rowIndex,$columnIndex]=$playerSymbol
+		if [ $(isCheckResult) -eq 1  ]
+        then
+           echo "You Won"
+           return 0
+        fi
   fi
   done
+	echo "Match Tie"
+}
+
+function isCheckResult()
+{
+   if [ $((${dictBoard[0,0]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[0,1]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[0,2]})) -eq $(($playerSymbol)) ]
+   then
+      echo 1
+   elif [ $((${dictBoard[1,0]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[1,1]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[1,2]})) -eq $(($playerSymbol)) ]
+   then
+      echo 1
+   elif [ $((${dictBoard[2,0]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[2,1]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[2,2]})) -eq $(($playerSymbol)) ]
+   then
+      echo 1
+   elif [ $((${dictBoard[0,0]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[1,0]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[2,0]})) -eq $(($playerSymbol)) ]
+   then
+      echo 1
+   elif [ $((${dictBoard[0,1]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[1,1]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[2,1]})) -eq $(($playerSymbol)) ]
+   then
+      echo 1
+   elif [ $((${dictBoard[0,2]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[1,2]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[2,2]})) -eq $(($playerSymbol)) ]
+   then
+      echo 1
+   elif [ $((${dictBoard[0,0]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[1,1]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[2,2]})) -eq $(($playerSymbol)) ]
+   then
+      echo 1
+   elif [ $((${dictBoard[2,0]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[1,1]})) -eq $(($playerSymbol)) ] && [ $((${dictBoard[0,2]})) -eq $(($playerSymbol)) ]
+   then
+      echo 1
+   else
+      echo 0
+   fi
 }
 
 assignSymbol
 getToss
-echo
 initializeBoard
 inputToBoard
 displayBoard
