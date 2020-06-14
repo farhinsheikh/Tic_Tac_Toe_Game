@@ -292,8 +292,12 @@ function  computerTurn(){
             return
           fi
       else
-         while [ true ]
-         do
+			if [ true ]
+			then
+				checkCorners
+			else
+         	while [ true ]
+         	do
             local row=$(( RANDOM % $NUM_OF_ROWS ))
             local column=$(( RANDOM % $NUM_OF_COLUMNS ))
 
@@ -306,6 +310,7 @@ function  computerTurn(){
             fi
          done
       fi
+	fi
 }
 
 function checkForComputerWin()
@@ -420,5 +425,25 @@ function checkForComputerWin()
       fi
 }
 
+function checkCorners()
+{
+      if [ ${board[0,0]} != $PLAYER_SYMBOL ] && [ ${board[0,0]} != $COMPUTER_SYMBOL ]
+      then
+         board[0,0]=$COMPUTER_SYMBOL
+         return
+      elif [ ${board[0,2]} != $PLAYER_SYMBOL ] && [ ${board[0,2]} != $COMPUTER_SYMBOL ]
+      then
+         board[0,2]=$COMPUTER_SYMBOL
+         return
+      elif [ ${board[2,0]} != $PLAYER_SYMBOL ] && [ ${board[2,0]} != $COMPUTER_SYMBOL ]
+      then
+         board[2,0]=$COMPUTER_SYMBOL
+         return
+      elif [ ${board[2,2]} != $PLAYER_SYMBOL ] && [ ${board[2,2]} != $COMPUTER_SYMBOL ]
+      then
+         board[2,2]=$COMPUTER_SYMBOL
+         return
+      fi
+}
 inputToBoard
 displayBoard
